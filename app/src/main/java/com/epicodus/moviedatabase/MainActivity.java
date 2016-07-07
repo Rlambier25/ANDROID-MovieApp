@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (v == mActorButton) {
             String query = mMovieQuery.getText().toString();
-            Intent intent = new Intent(MainActivity.this, MovieResultsActivity.class);
+            Intent intent = new Intent(MainActivity.this, ActorResultsActivity.class);
             intent.putExtra("query", query);
             intent.putExtra("searchType", "person");
             startActivity(intent);

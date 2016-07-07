@@ -7,10 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -20,10 +16,11 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class MovieResultsActivity extends AppCompatActivity {
+public class ActorResultsActivity extends AppCompatActivity {
+
     public static final String TAG = MainActivity.class.getSimpleName();
 
-    public ArrayList<Movie> mMovies = new ArrayList<>();
+    public ArrayList<Movie> mMovies =  new ArrayList<>();
     private MovieListAdapter mAdapter;
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -34,15 +31,14 @@ public class MovieResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_results);
         ButterKnife.bind(this);
 
-        Intent intent = getIntent();
-        String query = intent.getStringExtra("query");
-        String searchType = intent.getStringExtra("searchType");
-        Log.v(TAG, searchType);
-        getMovie(query, searchType);
-    }
+            Intent intent = getIntent();
+            String query = intent.getStringExtra("query");
+            String searchType = intent.getStringExtra("searchType");
+            Log.v(TAG, searchType);
+            getActor(query, searchType);
+        }
 
-
-    private void getMovie(String query, String searchType) {
+    private void getActor(String query, String searchType) {
         final MovieService movieService = new MovieService();
         movieService.getMovie(query, searchType, new Callback() {
 
@@ -53,19 +49,19 @@ public class MovieResultsActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                mMovies = movieService.processResults(response);
+                mMovies = movieService.processActorResults(response);
 
                 for (int i = 0; i < mMovies.size(); i++) {
                     Log.v("response", "" + mMovies);
                     mMovies.get(i).getId();
                     Log.v("tag", "" + mMovies.get(i).getId());
                 }
-                MovieResultsActivity.this.runOnUiThread(new Runnable() {
+                ActorResultsActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         mAdapter = new MovieListAdapter(getApplicationContext(), mMovies);
                         mRecyclerView.setAdapter(mAdapter);
-                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MovieResultsActivity.this);
+                        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ActorResultsActivity.this);
                         mRecyclerView.setLayoutManager(layoutManager);
                         mRecyclerView.setHasFixedSize(true);
                     }
@@ -73,4 +69,4 @@ public class MovieResultsActivity extends AppCompatActivity {
             }
         });
     }
-}
+    }

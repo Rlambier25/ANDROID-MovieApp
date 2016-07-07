@@ -46,7 +46,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         return mMovies.size();
     }
 
-    public class MovieViewHolder extends RecyclerView.ViewHolder {
+    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         //        @Bind(R.id.poster) ImageView mPoster;
         @Bind(R.id.movieTitle) TextView mTitle;
         @Bind(R.id.rating) TextView mRating;
@@ -59,16 +59,16 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
             super(itemView);
             mContext = itemView.getContext();
             ButterKnife.bind(this, itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick (View v) {
-                    int itemPosition = getLayoutPosition();
-                    Intent intent = new Intent(mContext, MovieDetailActivity.class);
-                    intent.putExtra("position", itemPosition + "");
-                    intent.putExtra("movies", Parcels.wrap(mMovies));
-                    mContext.startActivity(intent);
-                }
-            });
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int itemPosition = getLayoutPosition();
+            Intent intent = new Intent(mContext, MovieDetailActivity.class);
+            intent.putExtra("position", itemPosition + "");
+            intent.putExtra("movies", Parcels.wrap(mMovies));
+            mContext.startActivity(intent);
         }
 
         public void bindMovie(Movie movie) {
